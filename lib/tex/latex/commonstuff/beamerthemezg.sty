@@ -1,0 +1,46 @@
+\mode<presentation>
+
+% Requirement
+\RequirePackage{tikz}
+
+% Settings
+\useoutertheme{metropolis}
+\useinnertheme{metropolis}
+\usefonttheme{metropolis}
+\usecolortheme{metropolis}
+
+% Theme
+\definecolor{Green}{RGB}{141, 176, 63}
+\definecolor{Gray}{RGB}{96, 95, 84}
+\setbeamercolor{title separator}{fg=Green}
+\setbeamercolor{frametitle}{fg=Green,bg=Gray}
+\setbeamercolor{progress bar in head/foot}{bg=Gray,fg=Green}
+\setbeamercolor{progress bar in section page}{bg=Gray,fg=Green}
+\setbeamertemplate{bibliography item}[text]
+
+% Defaults
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{default}
+\usepackage{outlines}
+
+% Language
+\uselanguage{brazil}
+\languagepath{brazil}
+
+\deftranslation[to=brazil]{Theorem}{Teorema}
+\deftranslation[to=brazil]{Definition}{Definição}
+\deftranslation[to=brazil]{Example}{Exemplo}
+
+% Logo
+\titlegraphic{
+    \tikz[overlay,remember picture]
+        \node[at=(current page.south east), anchor=south east] {
+            \includegraphics[width=1cm]{logo}
+        };
+}
+
+% Bibliography
+\bibliographystyle{abnt}
+
+\mode<all>
