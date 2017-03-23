@@ -111,5 +111,8 @@ sympy-plots-for-*.tex/
 # kile
 *.tex.backup
 
+# minted
+_minted-*
+
 # others
 .directory 
