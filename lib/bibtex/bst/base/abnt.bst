@@ -1772,7 +1772,7 @@ FUNCTION {phdthesis}
   new.block
   format.pages "pages" output.check
   new.block
-  "Tese (Doutorado em F\'{\i}sica) - " "type" output.check
+  "Tese de Doutorado - " "type" output.check
   before.all 'output.state :=
   school "school" output.check
   address "address" output.check
