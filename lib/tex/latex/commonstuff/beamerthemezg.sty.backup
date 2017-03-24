@@ -16,7 +16,7 @@
 \setbeamercolor{frametitle}{fg=Green,bg=Gray}
 \setbeamercolor{progress bar in head/foot}{bg=Gray,fg=Green}
 \setbeamercolor{progress bar in section page}{bg=Gray,fg=Green}
-%\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{bibliography item}[text]
 
 % Defaults
 \usepackage[utf8]{inputenc}
@@ -26,8 +26,6 @@
 \usepackage[ruled, algo2e, vlined, portuguese]{algorithm2e}
 \usepackage{minted}
 \usepackage[svgpath=./fig/]{svg}
-\usepackage{booktabs}
-\usepackage{natbib}
 
 % Language
 \uselanguage{brazil}
@@ -46,9 +44,16 @@
 }
 
 % Bibliography
-\bibliographystyle{authordate1}
+\bibliographystyle{abnt}
 
 % Figures
 \graphicspath{{./fig/}}
+
+% Source
+\newcommand{\source}[1]{\begin{textblock*}{4cm}(8.7cm,8.6cm)
+    \begin{beamercolorbox}[ht=0.5cm,right]{framesource}
+        \usebeamerfont{framesource}\usebeamercolor[fg]{framesource} Source: {#1}
+    \end{beamercolorbox}
+\end{textblock*}}
 
 \mode<all>
