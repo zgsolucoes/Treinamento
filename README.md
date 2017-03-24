@@ -4,9 +4,9 @@ Repositório para armazenar treinamentos da ZG Soluções.
 
 ## Dependências
 
+- LaTeX (sudo apt-get install texlive texlive-lang-portuguese texlive-latex-extra texlive-science texlive-extra-utils texlive-publishers)
 - Python
 - Pygments (pip install Pygments)
-- Minted
 - Inkscape (sudo apt-get install inkscape)
 
 ## Preparando o Projeto
