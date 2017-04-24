@@ -26,7 +26,7 @@ class Prontuario {
 		float valorDiarias = 0.0
 
 		// Contabilizar as diárias
-		switch (internacao.tipoLeito) {
+		switch (internacao?.tipoLeito) {
 			case TipoLeito.ENFERMARIA:
 				if (internacao.qtdeDias <= 3) {
 					valorDiarias += 40.00 * internacao.qtdeDias // Internação Básica
@@ -74,13 +74,27 @@ class Prontuario {
 		}
 
 		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		conta += "\n\nConforme os detalhes abaixo:\n"
-		conta += "\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
-		conta += "\n\t\t\t\t\t${internacao.qtdeDias} diárias em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
+		conta += "\n\nConforme os detalhes abaixo:"
+
+		if (internacao) {
+			conta += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
+			conta += "\n\t\t\t\t\t${internacao.qtdeDias} diárias em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
+		}
+
 		conta += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
-		conta += "\n\t\t\t\t\t${qtdeProcedimentosBasicos} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} básico${qtdeProcedimentosBasicos > 1 ? 's' : ''}"
-		conta += "\n\t\t\t\t\t${qtdeProcedimentosComuns} procedimento${qtdeProcedimentosComuns > 1 ? 's' : ''} comu${qtdeProcedimentosComuns > 1 ? 'ns' : 'm'}"
-		conta += "\n\t\t\t\t\t${qtdeProcedimentosAvancados} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} avançado${qtdeProcedimentosAvancados > 1 ? 's' : ''}"
+
+		if (qtdeProcedimentosBasicos > 0) {
+			conta += "\n\t\t\t\t\t${qtdeProcedimentosBasicos} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} básico${qtdeProcedimentosBasicos > 1 ? 's' : ''}"
+		}
+
+
+		if (qtdeProcedimentosComuns > 0) {
+			conta += "\n\t\t\t\t\t${qtdeProcedimentosComuns} procedimento${qtdeProcedimentosComuns > 1 ? 's' : ''} comu${qtdeProcedimentosComuns > 1 ? 'ns' : 'm'}"
+		}
+
+		if (qtdeProcedimentosAvancados > 0) {
+			conta += "\n\t\t\t\t\t${qtdeProcedimentosAvancados} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} avançado${qtdeProcedimentosAvancados > 1 ? 's' : ''}"
+		}
 
 		conta += "\n\nVolte sempre, a casa é sua!"
 		conta += "\n----------------------------------------------------------------------------------------------"
