@@ -138,29 +138,6 @@ class Prontuario {
 	}
 
 	private float contabilizaDiarias() {
-		float valorDiarias = 0
-		switch (internacao?.tipoLeito) {
-			case TipoLeito.ENFERMARIA:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 40.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 35.00 * internacao.qtdeDias // Internação Média
-				} else {
-					valorDiarias += 30.00 * internacao.qtdeDias // Internação Grave
-				}
-				break
-
-			case TipoLeito.APARTAMENTO:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 100.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 90.00 * internacao.qtdeDias  // Internação Média
-				} else {
-					valorDiarias += 80.00 * internacao.qtdeDias  // Internação Grave
-				}
-				break
-		}
-
-		return valorDiarias
+		return internacao ? internacao.obtenhaValor() : 0
 	}
 }
