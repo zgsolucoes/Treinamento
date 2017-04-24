@@ -22,22 +22,24 @@ class Prontuario {
 	String imprimaConta() {
 		def formatter = NumberFormat.currencyInstance
 
-		String conta = "----------------------------------------------------------------------------------------------"
-
 		float valorDiarias = contabilizaDiarias()
 		float valorTotalProcedimentos = obtenhaTotalProcedimentos()
 		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentosBasicos()
 		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentosComuns()
 		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
 
+		// Monta dados de Cabeçalho
+		String conta = "----------------------------------------------------------------------------------------------"
 		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
 		conta += "\n\nConforme os detalhes abaixo:"
 
+		// Monta dados de Internação
 		if (internacao) {
 			conta += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
 			conta += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
 		}
 
+		//Monta dados de Procedimentos
 		if (procedimentos.size() > 0) {
 			conta += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
 
@@ -54,6 +56,7 @@ class Prontuario {
 			}
 		}
 
+		//Monta dados de Rodapé
 		conta += "\n\nVolte sempre, a casa é sua!"
 		conta += "\n----------------------------------------------------------------------------------------------"
 
