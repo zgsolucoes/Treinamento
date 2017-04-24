@@ -31,10 +31,7 @@ class Prontuario {
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 
 		// Monta dados de Internação
-		if (internacao) {
-			conta += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
-			conta += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
-		}
+		conta += montaDadosInternacao(formatter, valorDiarias)
 
 		//Monta dados de Procedimentos
 		if (procedimentos.size() > 0) {
@@ -56,6 +53,15 @@ class Prontuario {
 		conta += montaRodape()
 
 		return conta
+	}
+
+	private String montaDadosInternacao(NumberFormat formatter, float valorDiarias) {
+		String dadosInternacao = ""
+		if (internacao) {
+			dadosInternacao += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
+			dadosInternacao += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
+		}
+		return dadosInternacao
 	}
 
 	private static String montaRodape() {
