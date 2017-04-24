@@ -26,28 +26,7 @@ class Prontuario {
 
 		float valorDiarias = 0.0
 
-		// Contabilizar as diárias
-		switch (internacao?.tipoLeito) {
-			case TipoLeito.ENFERMARIA:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 40.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 35.00 * internacao.qtdeDias // Internação Média
-				} else {
-					valorDiarias += 30.00 * internacao.qtdeDias // Internação Grave
-				}
-				break
-
-			case TipoLeito.APARTAMENTO:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 100.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 90.00 * internacao.qtdeDias  // Internação Média
-				} else {
-					valorDiarias += 80.00 * internacao.qtdeDias  // Internação Grave
-				}
-				break
-		}
+		valorDiarias = contabilizaDiarias(valorDiarias)
 
 		float valorTotalProcedimentos = 0.00
 		int qtdeProcedimentosBasicos = 0
@@ -102,5 +81,31 @@ class Prontuario {
 		conta += "\n----------------------------------------------------------------------------------------------"
 
 		return conta
+	}
+
+	private float contabilizaDiarias(float valorDiarias) {
+		switch (internacao?.tipoLeito) {
+			case TipoLeito.ENFERMARIA:
+				if (internacao.qtdeDias <= 3) {
+					valorDiarias += 40.00 * internacao.qtdeDias // Internação Básica
+				} else if (internacao.qtdeDias <= 8) {
+					valorDiarias += 35.00 * internacao.qtdeDias // Internação Média
+				} else {
+					valorDiarias += 30.00 * internacao.qtdeDias // Internação Grave
+				}
+				break
+
+			case TipoLeito.APARTAMENTO:
+				if (internacao.qtdeDias <= 3) {
+					valorDiarias += 100.00 * internacao.qtdeDias // Internação Básica
+				} else if (internacao.qtdeDias <= 8) {
+					valorDiarias += 90.00 * internacao.qtdeDias  // Internação Média
+				} else {
+					valorDiarias += 80.00 * internacao.qtdeDias  // Internação Grave
+				}
+				break
+		}
+
+		valorDiarias
 	}
 }
