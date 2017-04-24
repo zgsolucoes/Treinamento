@@ -53,18 +53,22 @@ class Prontuario {
 			}
 		}
 
-		//Monta dados de Rodapé
-		conta += "\n\nVolte sempre, a casa é sua!"
-		conta += "\n----------------------------------------------------------------------------------------------"
+		conta += montaRodape()
 
 		return conta
 	}
 
+	private static String montaRodape() {
+		String rodape = "\n\nVolte sempre, a casa é sua!"
+		rodape += "\n----------------------------------------------------------------------------------------------"
+		return rodape
+	}
+
 	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
-		String conta = "----------------------------------------------------------------------------------------------"
-		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		conta += "\n\nConforme os detalhes abaixo:"
-		conta
+		String cabecalho = "----------------------------------------------------------------------------------------------"
+		cabecalho += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
+		cabecalho += "\n\nConforme os detalhes abaixo:"
+		cabecalho
 	}
 
 	int obtenhaQtdeProcedimentosAvancados() {
