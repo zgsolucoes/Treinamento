@@ -30,29 +30,31 @@ class Prontuario {
 
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 
-		// Monta dados de Internação
 		conta += montaDadosInternacao(formatter, valorDiarias)
-
-		//Monta dados de Procedimentos
-		if (procedimentos.size() > 0) {
-			conta += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
-
-			if (qtdeProcedimentosBasicos > 0) {
-				conta += "\n\t\t\t\t\t${qtdeProcedimentosBasicos} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} básico${qtdeProcedimentosBasicos > 1 ? 's' : ''}"
-			}
-
-			if (qtdeProcedimentosComuns > 0) {
-				conta += "\n\t\t\t\t\t${qtdeProcedimentosComuns} procedimento${qtdeProcedimentosComuns > 1 ? 's' : ''} comu${qtdeProcedimentosComuns > 1 ? 'ns' : 'm'}"
-			}
-
-			if (qtdeProcedimentosAvancados > 0) {
-				conta += "\n\t\t\t\t\t${qtdeProcedimentosAvancados} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} avançado${qtdeProcedimentosAvancados > 1 ? 's' : ''}"
-			}
-		}
-
+		conta += montaDadosDosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
 		conta += montaRodape()
 
 		return conta
+	}
+
+	private String montaDadosDosProcedimentos(NumberFormat formatter, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+		String dadosProcedimentos = ""
+		if (procedimentos.size() > 0) {
+			dadosProcedimentos += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
+
+			if (qtdeProcedimentosBasicos > 0) {
+				dadosProcedimentos += "\n\t\t\t\t\t${qtdeProcedimentosBasicos} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} básico${qtdeProcedimentosBasicos > 1 ? 's' : ''}"
+			}
+
+			if (qtdeProcedimentosComuns > 0) {
+				dadosProcedimentos += "\n\t\t\t\t\t${qtdeProcedimentosComuns} procedimento${qtdeProcedimentosComuns > 1 ? 's' : ''} comu${qtdeProcedimentosComuns > 1 ? 'ns' : 'm'}"
+			}
+
+			if (qtdeProcedimentosAvancados > 0) {
+				dadosProcedimentos += "\n\t\t\t\t\t${qtdeProcedimentosAvancados} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} avançado${qtdeProcedimentosAvancados > 1 ? 's' : ''}"
+			}
+		}
+		dadosProcedimentos
 	}
 
 	private String montaDadosInternacao(NumberFormat formatter, float valorDiarias) {
