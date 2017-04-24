@@ -24,9 +24,7 @@ class Prontuario {
 
 		String conta = "----------------------------------------------------------------------------------------------"
 
-		float valorDiarias = 0.0
-
-		valorDiarias = contabilizaDiarias(valorDiarias)
+		float valorDiarias = contabilizaDiarias()
 
 		float valorTotalProcedimentos = 0.00
 		int qtdeProcedimentosBasicos = 0
@@ -83,7 +81,8 @@ class Prontuario {
 		return conta
 	}
 
-	private float contabilizaDiarias(float valorDiarias) {
+	private float contabilizaDiarias() {
+		float valorDiarias = 0
 		switch (internacao?.tipoLeito) {
 			case TipoLeito.ENFERMARIA:
 				if (internacao.qtdeDias <= 3) {
@@ -106,6 +105,6 @@ class Prontuario {
 				break
 		}
 
-		valorDiarias
+		return valorDiarias
 	}
 }
