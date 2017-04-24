@@ -28,10 +28,7 @@ class Prontuario {
 		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentosComuns()
 		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
 
-		// Monta dados de Cabeçalho
-		String conta = "----------------------------------------------------------------------------------------------"
-		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		conta += "\n\nConforme os detalhes abaixo:"
+		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 
 		// Monta dados de Internação
 		if (internacao) {
@@ -61,6 +58,13 @@ class Prontuario {
 		conta += "\n----------------------------------------------------------------------------------------------"
 
 		return conta
+	}
+
+	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
+		String conta = "----------------------------------------------------------------------------------------------"
+		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
+		conta += "\n\nConforme os detalhes abaixo:"
+		conta
 	}
 
 	int obtenhaQtdeProcedimentosAvancados() {
