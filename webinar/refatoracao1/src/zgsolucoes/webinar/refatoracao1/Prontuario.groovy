@@ -25,31 +25,10 @@ class Prontuario {
 		String conta = "----------------------------------------------------------------------------------------------"
 
 		float valorDiarias = contabilizaDiarias()
-
-		float valorTotalProcedimentos = 0.00
-		int qtdeProcedimentosBasicos = 0
-		int qtdeProcedimentosComuns = 0
-		int qtdeProcedimentosAvancados = 0
-
-		//Contabiliza os procedimentos
-		for (Procedimento procedimento in procedimentos) {
-			switch (procedimento.tipoProcedimento) {
-				case TipoProcedimento.BASICO:
-					qtdeProcedimentosBasicos++
-					valorTotalProcedimentos += 50.00
-					break
-
-				case TipoProcedimento.COMUM:
-					qtdeProcedimentosComuns++
-					valorTotalProcedimentos += 150.00
-					break
-
-				case TipoProcedimento.AVANCADO:
-					qtdeProcedimentosAvancados++
-					valorTotalProcedimentos += 500.00
-					break
-			}
-		}
+		float valorTotalProcedimentos = obtenhaTotalProcedimentos()
+		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentosBasicos()
+		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentosComuns()
+		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
 
 		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
 		conta += "\n\nConforme os detalhes abaixo:"
@@ -79,6 +58,64 @@ class Prontuario {
 		conta += "\n----------------------------------------------------------------------------------------------"
 
 		return conta
+	}
+
+	int obtenhaQtdeProcedimentosAvancados() {
+		int qtdeProcedimentosAvancados = 0
+
+		for (Procedimento procedimento in procedimentos) {
+			if (procedimento.tipoProcedimento == TipoProcedimento.AVANCADO) {
+				qtdeProcedimentosAvancados++
+			}
+		}
+
+		return qtdeProcedimentosAvancados
+	}
+
+	int obtenhaQtdeProcedimentosComuns() {
+		int qtdeProcedimentosComuns = 0
+
+		for (Procedimento procedimento in procedimentos) {
+			if (procedimento.tipoProcedimento == TipoProcedimento.COMUM) {
+				qtdeProcedimentosComuns++
+			}
+		}
+
+		return qtdeProcedimentosComuns
+	}
+
+	int obtenhaQtdeProcedimentosBasicos() {
+		int qtdeProcedimentosBasicos = 0
+
+		for (Procedimento procedimento in procedimentos) {
+			if (procedimento.tipoProcedimento == TipoProcedimento.BASICO) {
+				qtdeProcedimentosBasicos++
+			}
+		}
+
+		return qtdeProcedimentosBasicos
+	}
+
+	float obtenhaTotalProcedimentos() {
+		float valorTotalProcedimentos = 0
+		for (Procedimento procedimento in procedimentos) {
+			switch (procedimento.tipoProcedimento) {
+				case TipoProcedimento.BASICO:
+					valorTotalProcedimentos += 50.00
+					break
+
+				case TipoProcedimento.COMUM:
+					valorTotalProcedimentos += 150.00
+					break
+
+				case TipoProcedimento.AVANCADO:
+					valorTotalProcedimentos += 500.00
+					break
+			}
+		}
+
+		return valorTotalProcedimentos
+
 	}
 
 	private float contabilizaDiarias() {
