@@ -23,9 +23,6 @@ Valor Total Procedimentos:		R\$ 550,00
 Volte sempre, a casa é sua!
 ----------------------------------------------------------------------------------------------"""
 
-		println prontuario.imprimaConta()
-		println respostaEsperada
-
 		assert prontuario.imprimaConta() == respostaEsperada
 	}
 
@@ -51,6 +48,25 @@ Valor Total Procedimentos:		R\$ 850,00
 					1 procedimento básico
 					2 procedimentos comuns
 					1 procedimento avançado
+
+Volte sempre, a casa é sua!
+----------------------------------------------------------------------------------------------"""
+
+		assert prontuario.imprimaConta() == respostaEsperada
+	}
+
+	@Test
+	void testInternacaoMCCriolo() {
+		Prontuario prontuario = new Prontuario("MC Criolo")
+		prontuario.setInternacao(new Internacao(TipoLeito.ENFERMARIA, 1))
+
+		final String respostaEsperada = """----------------------------------------------------------------------------------------------
+A conta do(a) paciente MC Criolo tem valor total de __ R\$ 40,00 __
+
+Conforme os detalhes abaixo:
+
+Valor Total Diárias:			R\$ 40,00
+					1 diária em enfermaria
 
 Volte sempre, a casa é sua!
 ----------------------------------------------------------------------------------------------"""
