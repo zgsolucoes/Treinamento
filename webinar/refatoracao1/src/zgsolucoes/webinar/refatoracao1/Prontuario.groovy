@@ -22,11 +22,12 @@ class Prontuario {
 	String imprimaConta() {
 		def formatter = NumberFormat.currencyInstance
 
-		float valorDiarias = contabilizaDiarias()
-		float valorTotalProcedimentos = obtenhaTotalProcedimentos()
-		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentos(TipoProcedimento.BASICO)
-		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentos(TipoProcedimento.COMUM)
-		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentos(TipoProcedimento.AVANCADO)
+		final float valorDiarias = internacao ? internacao.obtenhaValor() : 0
+		final float valorTotalProcedimentos = procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
+
+		final int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentos(TipoProcedimento.BASICO)
+		final int qtdeProcedimentosComuns = obtenhaQtdeProcedimentos(TipoProcedimento.COMUM)
+		final int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentos(TipoProcedimento.AVANCADO)
 
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 		conta += montaDadosInternacao(formatter, valorDiarias)
@@ -80,13 +81,5 @@ class Prontuario {
 
 	int obtenhaQtdeProcedimentos(TipoProcedimento tipoProcedimento) {
 		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == tipoProcedimento }
-	}
-
-	float obtenhaTotalProcedimentos() {
-		return procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
-	}
-
-	private float contabilizaDiarias() {
-		return internacao ? internacao.obtenhaValor() : 0
 	}
 }
