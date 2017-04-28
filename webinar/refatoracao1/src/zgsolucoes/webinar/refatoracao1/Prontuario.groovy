@@ -25,9 +25,11 @@ class Prontuario {
 		final float valorDiarias = internacao ? internacao.obtenhaValor() : 0
 		final float valorTotalProcedimentos = procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
 
-		final int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentos(TipoProcedimento.BASICO)
-		final int qtdeProcedimentosComuns = obtenhaQtdeProcedimentos(TipoProcedimento.COMUM)
-		final int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentos(TipoProcedimento.AVANCADO)
+		final Map<TipoProcedimento, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.tipoProcedimento }
+
+		final int qtdeProcedimentosBasicos = procedimentosAgrupados[TipoProcedimento.BASICO]?.size() ?: 0
+		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
+		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
 
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 		conta += montaDadosInternacao(formatter, valorDiarias)
@@ -77,9 +79,5 @@ class Prontuario {
 		String rodape = "\n\nVolte sempre, a casa é sua!"
 		rodape += "\n----------------------------------------------------------------------------------------------"
 		return rodape
-	}
-
-	int obtenhaQtdeProcedimentos(TipoProcedimento tipoProcedimento) {
-		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == tipoProcedimento }
 	}
 }
