@@ -116,14 +116,7 @@ class Prontuario {
 	}
 
 	float obtenhaTotalProcedimentos() {
-		float valorTotalProcedimentos = 0
-
-		for (Procedimento procedimento in procedimentos) {
-			valorTotalProcedimentos += procedimento.obtenhaValor()
-		}
-
-		return valorTotalProcedimentos
-
+		return procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
 	}
 
 	private float contabilizaDiarias() {
