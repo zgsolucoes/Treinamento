@@ -117,20 +117,9 @@ class Prontuario {
 
 	float obtenhaTotalProcedimentos() {
 		float valorTotalProcedimentos = 0
+
 		for (Procedimento procedimento in procedimentos) {
-			switch (procedimento.tipoProcedimento) {
-				case TipoProcedimento.BASICO:
-					valorTotalProcedimentos += 50.00
-					break
-
-				case TipoProcedimento.COMUM:
-					valorTotalProcedimentos += 150.00
-					break
-
-				case TipoProcedimento.AVANCADO:
-					valorTotalProcedimentos += 500.00
-					break
-			}
+			valorTotalProcedimentos += procedimento.obtenhaValor()
 		}
 
 		return valorTotalProcedimentos
