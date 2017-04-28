@@ -40,10 +40,10 @@ class Prontuario {
 	}
 
 	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
-		String cabecalho = "----------------------------------------------------------------------------------------------"
-		cabecalho += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		cabecalho += "\n\nConforme os detalhes abaixo:"
-		cabecalho
+		return """----------------------------------------------------------------------------------------------
+A conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __
+
+Conforme os detalhes abaixo:"""
 	}
 
 	private String montaDadosDosProcedimentos(NumberFormat formatter, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
@@ -67,17 +67,20 @@ class Prontuario {
 	}
 
 	private String montaDadosInternacao(NumberFormat formatter, float valorDiarias) {
-		String dadosInternacao = ""
-		if (internacao) {
-			dadosInternacao += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
-			dadosInternacao += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
+		if (!internacao) {
+			return ""
 		}
-		return dadosInternacao
+
+return """
+
+Valor Total Diárias:			${formatter.format(valorDiarias)}
+					${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"""
 	}
 
 	private static String montaRodape() {
-		String rodape = "\n\nVolte sempre, a casa é sua!"
-		rodape += "\n----------------------------------------------------------------------------------------------"
-		return rodape
+		return """
+
+Volte sempre, a casa é sua!
+----------------------------------------------------------------------------------------------"""
 	}
 }
