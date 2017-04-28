@@ -29,12 +29,18 @@ class Prontuario {
 		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
 
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
-
 		conta += montaDadosInternacao(formatter, valorDiarias)
 		conta += montaDadosDosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
 		conta += montaRodape()
 
 		return conta
+	}
+
+	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
+		String cabecalho = "----------------------------------------------------------------------------------------------"
+		cabecalho += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
+		cabecalho += "\n\nConforme os detalhes abaixo:"
+		cabecalho
 	}
 
 	private String montaDadosDosProcedimentos(NumberFormat formatter, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
@@ -72,47 +78,16 @@ class Prontuario {
 		return rodape
 	}
 
-	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
-		String cabecalho = "----------------------------------------------------------------------------------------------"
-		cabecalho += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		cabecalho += "\n\nConforme os detalhes abaixo:"
-		cabecalho
-	}
-
 	int obtenhaQtdeProcedimentosAvancados() {
-		int qtdeProcedimentosAvancados = 0
-
-		for (Procedimento procedimento in procedimentos) {
-			if (procedimento.tipoProcedimento == TipoProcedimento.AVANCADO) {
-				qtdeProcedimentosAvancados++
-			}
-		}
-
-		return qtdeProcedimentosAvancados
+		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.AVANCADO }
 	}
 
 	int obtenhaQtdeProcedimentosComuns() {
-		int qtdeProcedimentosComuns = 0
-
-		for (Procedimento procedimento in procedimentos) {
-			if (procedimento.tipoProcedimento == TipoProcedimento.COMUM) {
-				qtdeProcedimentosComuns++
-			}
-		}
-
-		return qtdeProcedimentosComuns
+		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.COMUM }
 	}
 
 	int obtenhaQtdeProcedimentosBasicos() {
-		int qtdeProcedimentosBasicos = 0
-
-		for (Procedimento procedimento in procedimentos) {
-			if (procedimento.tipoProcedimento == TipoProcedimento.BASICO) {
-				qtdeProcedimentosBasicos++
-			}
-		}
-
-		return qtdeProcedimentosBasicos
+		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.BASICO }
 	}
 
 	float obtenhaTotalProcedimentos() {
