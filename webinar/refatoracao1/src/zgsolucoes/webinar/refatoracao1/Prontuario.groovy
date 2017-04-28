@@ -20,8 +20,7 @@ class Prontuario {
 	}
 
 	String imprimaConta() {
-		def formatter = NumberFormat.currencyInstance
-
+		/* Organiza dados */
 		final float valorDiarias = internacao ? internacao.obtenhaValor() : 0
 		final float valorTotalProcedimentos = procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
 
@@ -31,12 +30,16 @@ class Prontuario {
 		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
 		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
 
-		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
-		conta += montaDadosInternacao(formatter, valorDiarias)
-		conta += montaDadosDosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
-		conta += montaRodape()
+		return montaString(valorDiarias, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
+	}
 
-		return conta
+	private String montaString(float valorDiarias, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+		def formatter = NumberFormat.currencyInstance
+		StringBuilder conta = new StringBuilder(montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos))
+		conta.append(montaDadosInternacao(formatter, valorDiarias))
+		conta.append(montaDadosDosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados))
+		conta.append(montaRodape())
+		return conta.toString()
 	}
 
 	private String montaCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
@@ -71,7 +74,7 @@ Conforme os detalhes abaixo:"""
 			return ""
 		}
 
-return """
+		return """
 
 Valor Total Diárias:			${formatter.format(valorDiarias)}
 					${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"""
