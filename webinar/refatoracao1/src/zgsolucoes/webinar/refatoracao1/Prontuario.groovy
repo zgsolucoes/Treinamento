@@ -24,9 +24,9 @@ class Prontuario {
 
 		float valorDiarias = contabilizaDiarias()
 		float valorTotalProcedimentos = obtenhaTotalProcedimentos()
-		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentosBasicos()
-		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentosComuns()
-		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
+		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentos(TipoProcedimento.BASICO)
+		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentos(TipoProcedimento.COMUM)
+		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentos(TipoProcedimento.AVANCADO)
 
 		String conta = montaCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
 		conta += montaDadosInternacao(formatter, valorDiarias)
@@ -78,16 +78,8 @@ class Prontuario {
 		return rodape
 	}
 
-	int obtenhaQtdeProcedimentosAvancados() {
-		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.AVANCADO }
-	}
-
-	int obtenhaQtdeProcedimentosComuns() {
-		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.COMUM }
-	}
-
-	int obtenhaQtdeProcedimentosBasicos() {
-		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == TipoProcedimento.BASICO }
+	int obtenhaQtdeProcedimentos(TipoProcedimento tipoProcedimento) {
+		return procedimentos.count { Procedimento procedimento -> procedimento.tipoProcedimento == tipoProcedimento }
 	}
 
 	float obtenhaTotalProcedimentos() {
