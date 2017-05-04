@@ -23,9 +23,12 @@ class Prontuario {
 		return internacao ? internacao.obtenhaValor() : 0
 	}
 
+	private float getValorTotalProcedimentos() {
+		procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
+	}
+
 	String imprimaConta() {
 		/* Organiza dados */
-		final float valorTotalProcedimentos = procedimentos.sum { Procedimento procedimento -> procedimento.obtenhaValor() } as Float ?: 0
 
 		final Map<TipoProcedimento, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.tipoProcedimento }
 
@@ -33,26 +36,26 @@ class Prontuario {
 		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
 		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
 
-		return montaString(valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
+		return montaString(qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
 	}
 
-	private String montaString(float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+	private String montaString(int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
 		def formatter = NumberFormat.currencyInstance
-		StringBuilder conta = new StringBuilder(montaCabecalho(formatter, valorTotalProcedimentos))
+		StringBuilder conta = new StringBuilder(montaCabecalho(formatter))
 		conta.append(montaDadosInternacao(formatter))
-		conta.append(montaDadosDosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados))
+		conta.append(montaDadosDosProcedimentos(formatter, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados))
 		conta.append(montaRodape())
 		return conta.toString()
 	}
 
-	private String montaCabecalho(NumberFormat formatter, float valorTotalProcedimentos) {
+	private String montaCabecalho(NumberFormat formatter) {
 		return """----------------------------------------------------------------------------------------------
 A conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __
 
 Conforme os detalhes abaixo:"""
 	}
 
-	private String montaDadosDosProcedimentos(NumberFormat formatter, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+	private String montaDadosDosProcedimentos(NumberFormat formatter, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
 		String dadosProcedimentos = ""
 		if (procedimentos.size() > 0) {
 			dadosProcedimentos += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
