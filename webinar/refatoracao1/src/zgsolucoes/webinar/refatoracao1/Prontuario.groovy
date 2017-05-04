@@ -29,21 +29,14 @@ class Prontuario {
 
 	String imprimaConta() {
 		/* Organiza dados */
-
-		final Map<TipoProcedimento, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.tipoProcedimento }
-
-		final int qtdeProcedimentosBasicos = procedimentosAgrupados[TipoProcedimento.BASICO]?.size() ?: 0
-		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
-		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
-
-		return montaString(qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
+		return montaString()
 	}
 
-	private String montaString(int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+	private String montaString() {
 		def formatter = NumberFormat.currencyInstance
 		StringBuilder conta = new StringBuilder(montaCabecalho(formatter))
 		conta.append(montaDadosInternacao(formatter))
-		conta.append(montaDadosDosProcedimentos(formatter, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados))
+		conta.append(montaDadosDosProcedimentos(formatter))
 		conta.append(montaRodape())
 		return conta.toString()
 	}
@@ -55,7 +48,13 @@ A conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(va
 Conforme os detalhes abaixo:"""
 	}
 
-	private String montaDadosDosProcedimentos(NumberFormat formatter, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+	private String montaDadosDosProcedimentos(NumberFormat formatter) {
+		final Map<TipoProcedimento, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.tipoProcedimento }
+
+		final int qtdeProcedimentosBasicos = procedimentosAgrupados[TipoProcedimento.BASICO]?.size() ?: 0
+		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
+		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
+
 		String dadosProcedimentos = ""
 		if (procedimentos.size() > 0) {
 			dadosProcedimentos += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
