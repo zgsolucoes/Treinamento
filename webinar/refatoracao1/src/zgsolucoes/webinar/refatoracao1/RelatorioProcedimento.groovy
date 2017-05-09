@@ -28,11 +28,11 @@ Conforme os detalhes abaixo:"""
 	}
 
 	private String montaDadosDosProcedimentos() {
-		final Map<TipoProcedimento, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.tipoProcedimento }
+		final Map<Class, List<Procedimento>> procedimentosAgrupados = procedimentos.groupBy { it.class }
 
-		final int qtdeProcedimentosBasicos = procedimentosAgrupados[TipoProcedimento.BASICO]?.size() ?: 0
-		final int qtdeProcedimentosComuns = procedimentosAgrupados[TipoProcedimento.COMUM]?.size() ?: 0
-		final int qtdeProcedimentosAvancados = procedimentosAgrupados[TipoProcedimento.AVANCADO]?.size() ?: 0
+		final int qtdeProcedimentosBasicos = procedimentosAgrupados[ProcedimentoBasico.class]?.size() ?: 0
+		final int qtdeProcedimentosComuns = procedimentosAgrupados[ProcedimentoComum.class]?.size() ?: 0
+		final int qtdeProcedimentosAvancados = procedimentosAgrupados[ProcedimentoAvancado.class]?.size() ?: 0
 
 		String dadosProcedimentos = ""
 		if (procedimentos.size() > 0) {

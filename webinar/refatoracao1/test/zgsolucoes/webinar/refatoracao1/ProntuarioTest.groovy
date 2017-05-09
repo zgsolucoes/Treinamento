@@ -8,8 +8,8 @@ class ProntuarioTest {
 	void testAtendimentoPaulMcCartney() {
 		Prontuario prontuario = new Prontuario("Paul McCartney")
 
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.BASICO))
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.AVANCADO))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.BASICO))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.AVANCADO))
 
 		final String respostaEsperada = """----------------------------------------------------------------------------------------------
 A conta do(a) paciente Paul McCartney tem valor total de __ R\$ 550,00 __
@@ -31,10 +31,10 @@ Volte sempre, a casa é sua!
 		Prontuario prontuario = new Prontuario("Nando Reis")
 		prontuario.setInternacao(Internacao.novaInternacao(TipoLeito.APARTAMENTO, 4))
 
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.BASICO))
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.COMUM))
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.COMUM))
-		prontuario.addProcedimento(new Procedimento(TipoProcedimento.AVANCADO))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.BASICO))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.COMUM))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.COMUM))
+		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.AVANCADO))
 
 		final String respostaEsperada = """----------------------------------------------------------------------------------------------
 A conta do(a) paciente Nando Reis tem valor total de __ R\$ 1.210,00 __
