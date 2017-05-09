@@ -1,47 +1,28 @@
 package zgsolucoes.webinar.refatoracao1
 
-class Internacao {
-	private TipoLeito tipoLeito
-	private int qtdeDias
+abstract class Internacao {
+	protected int qtdeDias
 
-	Internacao(TipoLeito tipoLeito, int qtdeDias) {
-		this.tipoLeito = tipoLeito
-		this.qtdeDias = qtdeDias
-	}
+	static Internacao novaInternacao(TipoLeito tipoLeito, int qtdeDias) {
+		Internacao novaInternacao
+		if (tipoLeito == TipoLeito.ENFERMARIA) {
+			novaInternacao = new InternacaoEnfermaria()
+		} else if (tipoLeito == TipoLeito.APARTAMENTO) {
+			novaInternacao = new InternacaoApartamento()
+		} else {
+			throw new IllegalArgumentException("Tipo de leito desconhecido; $tipoLeito".toString())
+		}
 
-	TipoLeito getTipoLeito() {
-		return this.tipoLeito
+		novaInternacao.qtdeDias = qtdeDias
+
+		return novaInternacao
 	}
 
 	int getQtdeDias() {
 		return this.qtdeDias
 	}
 
-	float obtenhaValor() {
-		float valorDiarias = 0
+	abstract float obtenhaValor()
 
-		switch (tipoLeito) {
-			case TipoLeito.ENFERMARIA:
-				if (qtdeDias <= 3) {
-					valorDiarias += 40.00 * qtdeDias // Internação Básica
-				} else if (qtdeDias <= 8) {
-					valorDiarias += 35.00 * qtdeDias // Internação Média
-				} else {
-					valorDiarias += 30.00 * qtdeDias // Internação Grave
-				}
-				break
-
-			case TipoLeito.APARTAMENTO:
-				if (qtdeDias <= 3) {
-					valorDiarias += 100.00 * qtdeDias // Internação Básica
-				} else if (qtdeDias <= 8) {
-					valorDiarias += 90.00 * qtdeDias  // Internação Média
-				} else {
-					valorDiarias += 80.00 * qtdeDias  // Internação Grave
-				}
-				break
-		}
-
-		return valorDiarias
-	}
+	abstract String getTipo()
 }

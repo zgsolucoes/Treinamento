@@ -29,7 +29,7 @@ Volte sempre, a casa é sua!
 	@Test
 	void testInternacaoNandoReis() {
 		Prontuario prontuario = new Prontuario("Nando Reis")
-		prontuario.setInternacao(new Internacao(TipoLeito.APARTAMENTO, 4))
+		prontuario.setInternacao(Internacao.novaInternacao(TipoLeito.APARTAMENTO, 4))
 
 		prontuario.addProcedimento(new Procedimento(TipoProcedimento.BASICO))
 		prontuario.addProcedimento(new Procedimento(TipoProcedimento.COMUM))
@@ -58,7 +58,7 @@ Volte sempre, a casa é sua!
 	@Test
 	void testInternacaoMCCriolo() {
 		Prontuario prontuario = new Prontuario("MC Criolo")
-		prontuario.setInternacao(new Internacao(TipoLeito.ENFERMARIA, 1))
+		prontuario.setInternacao(Internacao.novaInternacao(TipoLeito.ENFERMARIA, 1))
 
 		final String respostaEsperada = """----------------------------------------------------------------------------------------------
 A conta do(a) paciente MC Criolo tem valor total de __ R\$ 40,00 __

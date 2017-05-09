@@ -61,7 +61,7 @@ Conforme os detalhes abaixo:"""
 		return """
 
 Valor Total Diárias:			${formatter.format(valorDiarias)}
-					${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"""
+					${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipo}"""
 	}
 
 	private static String montaRodape() {
