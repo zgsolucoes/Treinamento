@@ -29,6 +29,4 @@ Para testar que a configuração foi feita com sucesso, abra o 00-Exemplo/exempl
 
 ## Figuras e gráficos do draw.io
 
-Exportar para SVG com: Transparent Background, Crop e Embed Images.
-
-Para incluir na apresentação, utilize \resizebox para redimensionar a figura e \includesvg para especificá-la (apenas nome, sem .svg). Ela será automaticamente convertida em pdf_tex e inserida.
+Exportar para PNG com: Transparent Background e 200% de zoom. Salvar o diagrama em XML na pasta 'source' para tornar possível futura alteração.
