@@ -30,3 +30,9 @@ Para testar que a configuração foi feita com sucesso, abra o 00-Exemplo/exempl
 ## Figuras e gráficos do draw.io
 
 Exportar para PNG com: Transparent Background e 200% de zoom. Salvar o diagrama em XML na pasta 'source' para tornar possível futura alteração.
+
+## Tabelas
+
+Utilize o site: http://www.tablesgenerator.com
+
+Troque "Default table style" por "Booktab table style".

@@ -186,7 +186,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Liskov Substitution Principle}
- \begin{minted}[fontsize=\tiny,escapeinside=||]{java}
+ \begin{minted}[fontsize=\tiny]{java}
 class Square extends Rectangle {
   public void setWidth(int width){
     this.width = width;
@@ -239,7 +239,7 @@ class LspTest {
 \end{frame}
 
 \begin{frame}[fragile]{ERRADO!}
- \begin{minted}[fontsize=\tiny,escapeinside=||]{java}
+ \begin{minted}[fontsize=\tiny]{java}
 interface Worker {
   void work();
   void eat();
@@ -258,7 +258,7 @@ class Robot implements Worker {
 \end{frame}
 
 \begin{frame}[fragile]{CORRETO!}
- \begin{minted}[fontsize=\tiny,escapeinside=||]{java}
+ \begin{minted}[fontsize=\tiny]{java}
 interface Workable {
   public void work();
 }
@@ -309,6 +309,8 @@ class Robot implements Workable {
     \includegraphics[width=0.9\textwidth]{diagrama-inversao-dependencia-correto}
   \end{center}
 \end{frame}
+
+\section{Conclusões}
 
 \begin{frame}{Conclusões}
   \begin{outline}
