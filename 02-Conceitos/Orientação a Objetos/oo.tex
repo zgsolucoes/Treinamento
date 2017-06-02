@@ -53,9 +53,37 @@
 
 \subsection{Complexidade de código} % e a dificuldade de testar
 
+\begin{frame}[fragile]{Complexidade de código}
+ \begin{minted}[fontsize=\tiny]{java}
+int qtd = 0;
+Integer kicker = null; 
+String carta = null; 
+for(String c:cartas){
+  if(carta == null){
+    carta = c.substring(0, 1);
+    kicker = this.getPeso(c.substring(0, 1));
+    qtd++;
+  }else{
+    if(carta.equals(c.substring(0, 1))){
+      qtd++;
+    }else{
+      carta = c.substring(0, 1);
+      if(kicker == null){
+	kicker = this.getPeso(c.substring(0, 1));
+      }
+    }
+  }
+}
+if(qtd==4){
+  return kicker;
+}
+return null;
+  \end{minted}
+\end{frame}
+
 \begin{frame}{Complexidade de código}
   \begin{center}
-    \includegraphics[width=\textwidth]{complexidade}
+    \includegraphics[width=0.8\textwidth]{complexidade}
   \end{center}
 \end{frame}
 
