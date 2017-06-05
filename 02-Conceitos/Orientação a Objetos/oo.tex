@@ -118,11 +118,11 @@ return null;
 \begin{frame}{Coesão}
  \begin{outline}
   \1<1-> Classes
-    \2<2-> Baixa coesão $\rightarrow$ múltiplos métodos com responsabilidades/tarefas não relacionadas
-    \2<3-> Alta coesão $\rightarrow$ classe possui uma única responsabilidade/tarefa, com métodos relacionados a ela
-  \1<4-> Métodos
-    \2<5-> Baixa coesão $\rightarrow$ método realiza várias tarefas
-    \2<6-> Alta coesão $\rightarrow$ método com uma única tarefa, podendo chamar métodos que a complemente
+    \2<1-> Baixa coesão $\rightarrow$ múltiplos métodos com responsabilidades/tarefas não relacionadas
+    \2<2-> Alta coesão $\rightarrow$ classe possui uma única responsabilidade/tarefa, com métodos relacionados a ela
+  \1<3-> Métodos
+    \2<3-> Baixa coesão $\rightarrow$ método realiza várias tarefas
+    \2<4-> Alta coesão $\rightarrow$ método com uma única tarefa, podendo chamar métodos que a complemente
  \end{outline}
 \end{frame}
 
@@ -159,9 +159,9 @@ return null;
  \begin{outline}
   \1<1-> Mudanças de requisitos $\rightarrow$ mudanças nas responsabilidades
   \1<2-> Classes com múltiplas responsabilidades:
-    \2<3-> Múltiplos motivos de mudança
-    \2<4-> Acoplamento das responsabilidades $\rightarrow$ difícil alteração
-  \1<5-> Conclusão: uma classe deve ter uma \alert{única} responsabilidade
+    \2<2-> Múltiplos motivos de mudança
+    \2<3-> Acoplamento das responsabilidades $\rightarrow$ difícil alteração
+  \1<4-> Conclusão: uma classe deve ter uma \alert{única} responsabilidade
  \end{outline}
 \end{frame}
 
@@ -260,9 +260,9 @@ class LspTest {
 \begin{frame}{Interface Segregation Principle}
  \begin{outline}
   \1<1-> Interfaces poluídas prejudicam a coesão
-  \1<2-> "Clientes não devem ser forçacos a depender de interfaces que eles não usam"
-    \2<2-> Dependência de interfaces "gordas" gera acoplamento entre implementações
-  \1<3-> Diferentes clientes (implementações com diferentes responsabilidades) $\rightarrow$ diferentes interfaces
+  \1<2-> "Clientes não devem ser forçados a depender de interfaces que eles não usam"
+    \2<3-> Dependência de interfaces "gordas" gera acoplamento entre implementações
+  \1<4-> Diferentes clientes (implementações com diferentes responsabilidades) $\rightarrow$ diferentes interfaces
  \end{outline}
 \end{frame}
 
