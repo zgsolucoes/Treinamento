@@ -257,13 +257,13 @@ class StimulusResponseSpecification extends Specification {
 class AccountSpec extends Specification {
   
   def "withdrawing some amount decreases the balance by exactly that amount"(){
-    given: "an account with a balance of five euros"
+    given:
     Account account = new Account(balance)
     
-    when: "two euros are withdrawn"
+    when:
     account.withdraw(withdrawn)
     
-    then: "three euros remain in the account"
+    then:
     account.balance == remaining
     
     where:
