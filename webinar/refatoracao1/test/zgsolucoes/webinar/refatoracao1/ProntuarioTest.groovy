@@ -5,7 +5,7 @@ import org.junit.Test
 class ProntuarioTest {
 
 	@Test
-	void testAtendimentoPaulMcCartney() {
+	void testSomenteProcedimentos() {
 		Prontuario prontuario = new Prontuario("Paul McCartney")
 
 		prontuario.addProcedimento(Procedimento.novoProcedimento(TipoProcedimento.BASICO))
@@ -27,7 +27,7 @@ Volte sempre, a casa é sua!
 	}
 
 	@Test
-	void testInternacaoNandoReis() {
+	void testInternacaoComProcedimentos() {
 		Prontuario prontuario = new Prontuario("Nando Reis")
 		prontuario.setInternacao(Internacao.novaInternacao(TipoLeito.APARTAMENTO, 4))
 
@@ -56,7 +56,7 @@ Volte sempre, a casa é sua!
 	}
 
 	@Test
-	void testInternacaoMCCriolo() {
+	void testSomenteInternacao() {
 		Prontuario prontuario = new Prontuario("MC Criolo")
 		prontuario.setInternacao(Internacao.novaInternacao(TipoLeito.ENFERMARIA, 1))
 
