@@ -22,8 +22,8 @@
 \begin{frame}{Spock Framework}
  \begin{outline}
    \1<1-> Framework de testes
-   \1<2-> Para aplicações Java e Groovy
-   \1<3-> Baseado em Groovy
+   \1<2-> Para aplicações da Plataforma Java
+   \1<3-> Testes feitos em Groovy
    \1<4-> Compatível com JUnit
  \end{outline}
 \end{frame}
@@ -32,9 +32,8 @@
  \begin{outline}
    \1<1-> Menor código de testes
    \1<2-> Legibilidade de testes
-   \1<3-> Testes $\rightarrow$ Especificações
-   \1<4-> Extensível
-   \1<5-> Especificações como documentação
+   \1<3-> Testes $\rightarrow$ Especificações $\rightarrow$ Documentação
+   \1<4-> Extensibilidade
  \end{outline}
 \end{frame}
 
@@ -43,16 +42,15 @@
 \begin{frame}{State Based Testing}
  \begin{outline}
    \1<1-> Testes que invocam métodos e validam o estado do objeto sob testes
-   \1<2-> Testes clássicos:
-    \2<2-> Arranjar
-    \2<2-> Agir
-    \2<2-> Verificar (Assert)
-   \1<3-> Given-When-Then
+   \1<2-> BDD (Behavior-Driven Development):
+    \2<2-> Arranjar (Given)
+    \2<2-> Agir (When)
+    \2<2-> Verificar (Then)
  \end{outline}
 \end{frame}
 
-\begin{frame}[fragile]{Teste de Account com JUnit Clássico}
- \begin{minted}[fontsize=\tiny]{java}
+\begin{frame}[fragile]{Teste com JUnit}
+ \begin{minted}[fontsize=\scriptsize]{java}
 public class AccountTest {
   @Test
   public void withdrawSomeAmount(){
@@ -70,11 +68,11 @@ public class AccountTest {
   \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Teste de Account com Spock (1)}
- \begin{minted}[fontsize=\tiny]{groovy}
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 class AccountSpec extends Specification {
   
-  def "withdraw some amount"(){
+  def "withdrawing some amount decreases the balance by that amount"(){
     given:
     Account account = new Account(BigDecimal.valueOf(5))
     
@@ -89,11 +87,11 @@ class AccountSpec extends Specification {
   \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Teste de Account com Spock (2)}
- \begin{minted}[fontsize=\tiny]{groovy}
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 class AccountSpec extends Specification {
   
-  def "withdraw some amount"(){
+  def "withdrawing some amount decreases the balance by that amount"(){
     given:
     Account account = new Account(5.0)
     
@@ -108,11 +106,11 @@ class AccountSpec extends Specification {
   \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Teste de Account com Spock (3)}
- \begin{minted}[fontsize=\tiny]{groovy}
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 class AccountSpec extends Specification {
   
-  def "withdraw some amount"(){
+  def "withdrawing some amount decreases the balance by that amount"(){
     given: "an account with a balance of five euros"
     Account account = new Account(5.0)
     
@@ -127,20 +125,35 @@ class AccountSpec extends Specification {
   \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Teste de Account com Spock (4)}
- \begin{minted}[fontsize=\tiny]{groovy}
-class AccountSpec extends Specification {
-  
-  def "withdrawing some amount decreases the balance by exactly that amount"(){
-    given: "an account with a balance of five euros"
-    Account account = new Account(5.0)
+\begin{frame}[fragile]{Teste de Exception com JUnit}
+ \begin{minted}[fontsize=\scriptsize]{java}
+public class AccountTest {
+
+  @Test
+  public void withdrawNegativeAmount(){
+    // given
+    Account account = new Account(BigDecimal.valueOf(5));
     
-    when: "two euros are withdrawn"
-    account.withdraw(2.0)
-    
-    then: "three euros remain in the account"
-    account.balance == 3.0
+    try {
+      // when
+      account.withdraw(BigDecimal.valueOf(-1));
+      
+      // then?
+      fail("Should have thrown NegativeAmountWithdrawnException")
+    }
+    catch(NegativeAmountWithdrawnException e){
+      // then?
+      assertEquals(BigDecimal.valueOf(-1), e.getAmount());
+    }
   }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste de Exception com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
   
   def "can't withdraw a negative amount"(){
     given: "an account with a balance of five euros"
@@ -161,7 +174,7 @@ class AccountSpec extends Specification {
 \section{Conceitos básicos}
 
 \begin{frame}[fragile]{Specification}
- \begin{minted}[fontsize=\tiny]{groovy}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 import spock.lang.*
 
 class MyFirstSpecification extends Specification {
@@ -203,7 +216,7 @@ class MyFirstSpecification extends Specification {
     \2<2-> Pode conter código arbitrário
    \1<3-> \alert{then:}
     \2<3-> Descreve uma resposta
-    \2<4-> Restrito a condições, interações e definições de variável
+    \2<4-> Restrito a condições, condições de exceção, interações e definições de variável
    \1<5-> \alert{expect:}
     \2<5-> Descreve estímulo e resposta numa única expressão
   \0\visible<6->{\alert{when-then} $\rightarrow$ métodos com efeitos colaterais/alteram estado}
@@ -212,7 +225,7 @@ class MyFirstSpecification extends Specification {
 \end{frame}
 
 \begin{frame}[fragile]{Blocos de Estímulo e Resposta}
- \begin{minted}[fontsize=\tiny]{groovy}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 import spock.lang.*
 
 class StimulusResponseSpecification extends Specification {
@@ -246,17 +259,17 @@ class StimulusResponseSpecification extends Specification {
 
 \begin{frame}{Data Driven Testing}
  \begin{outline}
-   \1<1-> Testa o mesmo comportamento com dados variáveis
-   \1<2-> O mesmo teste é executado múltiplas vezes
+   \1<1-> Testa o mesmo comportamento com múltiplas entradas e saídas
+   \1<2-> O mesmo teste é executado múltiplas vezes para cada par entrada/saída
    \1<3-> @Unroll faz reportar como testes diferentes
  \end{outline}
 \end{frame}
 
 \begin{frame}[fragile]{Teste de Account com Spock (5)}
- \begin{minted}[fontsize=\tiny]{groovy}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 class AccountSpec extends Specification {
   
-  def "withdrawing some amount decreases the balance by exactly that amount"(){
+  def "withdrawing some amount decreases the balance by that amount"(){
     given:
     Account account = new Account(balance)
     
@@ -287,14 +300,16 @@ class AccountSpec extends Specification {
 \end{frame}
 
 \begin{frame}[fragile]{Teste de Publisher/Subscriber com Spock (1)}
- \begin{minted}[fontsize=\tiny]{groovy}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
 class PublisherSubscriberSpec extends Specification {
 
-  Publisher pub = new Publisher()
-  Subscriber sub1 = Mock()
-  Subscriber sub2 = Mock()
-  
   def "deliver messages to all subscribers"(){
+    given:
+    Publisher pub = new Publisher()
+    Subscriber sub1 = Mock()
+    Subscriber sub2 = Mock()
+    pub.subscribers.addAll([sub1, sub2])
+    
     when:
     pub.publish("msg")
     
@@ -359,7 +374,7 @@ class PublisherSubscriberSpec extends Specification {
  \begin{outline}
    \1<1-> Código mais conciso
    \1<2-> Funcionalidades do Groovy para os testes
-   \1<3-> Documentação de especificações
+   \1<3-> Documentação através de especificações
  \end{outline}
 \end{frame}
 
