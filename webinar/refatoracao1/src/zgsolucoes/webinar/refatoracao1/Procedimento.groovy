@@ -1,13 +1,17 @@
 package zgsolucoes.webinar.refatoracao1
 
-class Procedimento {
-	private TipoProcedimento tipoProcedimento
+abstract class Procedimento {
+	static Procedimento novoProcedimento(TipoProcedimento tipoProcedimento) {
+		if (tipoProcedimento == TipoProcedimento.COMUM) {
+			return new ProcedimentoComum()
+		} else if (tipoProcedimento == TipoProcedimento.BASICO) {
+			return new ProcedimentoBasico()
+		} else if (tipoProcedimento == TipoProcedimento.AVANCADO) {
+			return new ProcedimentoAvancado()
+		}
 
-	Procedimento(TipoProcedimento tipoProcedimento) {
-		this.tipoProcedimento = tipoProcedimento
+		throw new IllegalArgumentException("Tipo de procedimento não conhecido: $tipoProcedimento")
 	}
 
-	TipoProcedimento getTipoProcedimento() {
-		return this.tipoProcedimento
-	}
+	abstract float obtenhaValor()
 }

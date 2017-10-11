@@ -1,0 +1,382 @@
+\documentclass{beamer}
+
+\usetheme{zg}
+
+\title{Spock Framework}
+\date{\today}
+\author{Fernando Camargo}
+\institute{ZG Soluções}
+
+
+\begin{document}
+\maketitle
+
+\section{Spock?}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{spock.jpg}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Spock Framework}
+ \begin{outline}
+   \1<1-> Framework de testes
+   \1<2-> Para aplicações da Plataforma Java
+   \1<3-> Testes feitos em Groovy
+   \1<4-> Compatível com JUnit
+ \end{outline}
+\end{frame}
+
+\begin{frame}{Objetivos}
+ \begin{outline}
+   \1<1-> Menor código de testes
+   \1<2-> Legibilidade de testes
+   \1<3-> Testes $\rightarrow$ Especificações $\rightarrow$ Documentação
+   \1<4-> Extensibilidade
+ \end{outline}
+\end{frame}
+
+\section{State Based Testing}
+
+\begin{frame}{State Based Testing}
+ \begin{outline}
+   \1<1-> Testes que invocam métodos e validam o estado do objeto sob testes
+   \1<2-> BDD (Behavior-Driven Development):
+    \2<2-> Arranjar (Given)
+    \2<2-> Agir (When)
+    \2<2-> Verificar (Then)
+ \end{outline}
+\end{frame}
+
+\begin{frame}[fragile]{Teste com JUnit}
+ \begin{minted}[fontsize=\scriptsize]{java}
+public class AccountTest {
+  @Test
+  public void withdrawSomeAmount(){
+    // given
+    Account account = new Account(BigDecimal.valueOf(5));
+    
+    // when
+    account.withdraw(BigDecimal.valueOf(2));
+    
+    // then
+    assertEquals(BigDecimal.valueOf(3), account.getBalance());
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
+  
+  def "withdrawing some amount decreases the balance by that amount"(){
+    given:
+    Account account = new Account(BigDecimal.valueOf(5))
+    
+    when:
+    account.withdraw(BigDecimal.valueOf(2))
+    
+    then:
+    account.getBalance() == BigDecimal.valueOf(3) 
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
+  
+  def "withdrawing some amount decreases the balance by that amount"(){
+    given:
+    Account account = new Account(5.0)
+    
+    when:
+    account.withdraw(2.0)
+    
+    then:
+    account.balance == 3.0
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
+  
+  def "withdrawing some amount decreases the balance by that amount"(){
+    given: "an account with a balance of five euros"
+    Account account = new Account(5.0)
+    
+    when: "two euros are withdrawn"
+    account.withdraw(2.0)
+    
+    then: "three euros remain in the account"
+    account.balance == 3.0
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste de Exception com JUnit}
+ \begin{minted}[fontsize=\scriptsize]{java}
+public class AccountTest {
+
+  @Test
+  public void withdrawNegativeAmount(){
+    // given
+    Account account = new Account(BigDecimal.valueOf(5));
+    
+    try {
+      // when
+      account.withdraw(BigDecimal.valueOf(-1));
+      
+      // then?
+      fail("Should have thrown NegativeAmountWithdrawnException")
+    }
+    catch(NegativeAmountWithdrawnException e){
+      // then?
+      assertEquals(BigDecimal.valueOf(-1), e.getAmount());
+    }
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Teste de Exception com Spock}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
+  
+  def "can't withdraw a negative amount"(){
+    given: "an account with a balance of five euros"
+    Account account = new Account(5.0)
+    
+    when: "trying to withdraw -1"
+    account.withdraw(-1.0)
+    
+    then: "an exception is thrown"
+    NegativeAmountWithdrawnException e = thrown()
+    e.amount == -1.0
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\section{Conceitos básicos}
+
+\begin{frame}[fragile]{Specification}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+import spock.lang.*
+
+class MyFirstSpecification extends Specification {
+  // fields
+  def col = new Collaborator()
+  @Shared
+  def sharedCol = new Collaborator()
+  
+  // fixture methods
+  def setup() {}
+  def cleanup() {}
+  def setupSpec() {}
+  def cleanupSpec() {}
+
+  // feature methods
+  // helper methods
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}{Ciclo de vida e blocos}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{blocos}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Blocos de Setup}
+ \begin{outline}
+   \1<1-> Primeiro bloco de um método de testes
+   \1<2-> Faz as preparações necessárias para o teste
+   \1<3-> Pode começar com \alert{setup:}, \alert{given:} ou implícito
+ \end{outline}
+\end{frame}
+
+\begin{frame}{Blocos de Estímulo e Resposta}
+ \begin{outline}
+   \1<1-> \alert{when:}
+    \2<1-> Descreve um estimulo (invocação de método(s))
+    \2<2-> Pode conter código arbitrário
+   \1<3-> \alert{then:}
+    \2<3-> Descreve uma resposta
+    \2<4-> Restrito a condições, condições de exceção, interações e definições de variável
+   \1<5-> \alert{expect:}
+    \2<5-> Descreve estímulo e resposta numa única expressão
+  \0\visible<6->{\alert{when-then} $\rightarrow$ métodos com efeitos colaterais/alteram estado}
+  \0\visible<6->{\alert{expect} $\rightarrow$ métodos funcionais}
+ \end{outline}
+\end{frame}
+
+\begin{frame}[fragile]{Blocos de Estímulo e Resposta}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+import spock.lang.*
+
+class StimulusResponseSpecification extends Specification {
+
+  def "when-then style"(){
+    when:
+    int x = Math.max(5, 9)
+    
+    then:
+    x == 9
+  }
+  
+  def "expect style"(){
+    expect:
+    Math.max(5, 9) == 9
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}{Blocos de Cleanup}
+ \begin{outline}
+   \1<1-> Último bloco de um método de testes (podendo ser seguido apenas por where)
+   \1<2-> Limpeza de recursos externos
+   \1<3-> Sempre começa com \alert{cleanup:}
+ \end{outline}
+\end{frame}
+
+\section{Data Driven Testing}
+
+\begin{frame}{Data Driven Testing}
+ \begin{outline}
+   \1<1-> Testa o mesmo comportamento com múltiplas entradas e saídas
+   \1<2-> O mesmo teste é executado múltiplas vezes para cada par entrada/saída
+   \1<3-> @Unroll faz reportar como testes diferentes
+ \end{outline}
+\end{frame}
+
+\begin{frame}[fragile]{Teste de Account com Spock (5)}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class AccountSpec extends Specification {
+  
+  def "withdrawing some amount decreases the balance by that amount"(){
+    given:
+    Account account = new Account(balance)
+    
+    when:
+    account.withdraw(withdrawn)
+    
+    then:
+    account.balance == remaining
+    
+    where:
+    balance | withdrawn || remaining
+    5.0     | 2.0       || 3.0
+    4.0     | 0.0       || 4.0
+    4.0     | 4.0       || 0.0
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\section{Interaction Based Testing}
+
+\begin{frame}{Interaction Based Testing}
+ \begin{outline}
+   \1<1-> Comunicação entre objetos (invocação de métodos)
+   \1<2-> Spock possui framework próprio de Mocking
+ \end{outline}
+\end{frame}
+
+\begin{frame}[fragile]{Teste de Publisher/Subscriber com Spock (1)}
+ \begin{minted}[fontsize=\scriptsize]{groovy}
+class PublisherSubscriberSpec extends Specification {
+
+  def "deliver messages to all subscribers"(){
+    given:
+    Publisher pub = new Publisher()
+    Subscriber sub1 = Mock()
+    Subscriber sub2 = Mock()
+    pub.subscribers.addAll([sub1, sub2])
+    
+    when:
+    pub.publish("msg")
+    
+    then:
+    1 * sub1.receive("msg")
+    1 * sub2.receive("msg")
+  }
+  
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}{Mocking/Stubbing com Spock}
+ \begin{outline}
+   \1<1-> Criação
+    \2 \mintinline{groovy}{def sub = Mock(Subscriber)}
+    \2 \mintinline{groovy}{Subscriber sub = Mock()}
+   \1<2-> Mocking (verificação)
+    \2<2-> \mintinline{groovy}{1 * sub.receive("msg")}
+    \2<3-> \mintinline{groovy}{(1..3) * sub.receive("msg")}
+    \2<4-> \mintinline{groovy}{(1.._) * sub.receive(_ as String)}
+    \2<5-> \mintinline{groovy}{1 * sub.receive(!null)}
+    \2<6-> \mintinline{groovy}{1 * sub.receive({it.contains("m")})}
+    \2<7-> \mintinline{groovy}{1 * _./rec.*/("msg")}
+ \end{outline}
+\end{frame}
+
+\begin{frame}{Mocking/Stubbing com Spock}
+ \begin{outline}
+   \1<1-> Stubbing (sem verificação)
+    \2<1-> \mintinline{groovy}{sub.receive(_) >> "ok"}
+    \2<2-> \mintinline{groovy}{sub.receive(_) >>> ["ok", "ok", "fail"]}
+    \2<3-> \mintinline{groovy}{sub.receive(_) >>> {msg -> msg ? "ok" : "fail"}}
+   \1<4-> Mocking + Stubbing
+    \2<2-> \mintinline{groovy}{3 * sub.receive(_) >>> ["ok", "ok", "fail"]}
+ \end{outline}
+\end{frame}
+
+\section{Conclusões}
+
+\begin{frame}{Spock vs JUnit}
+  \begin{table}[]
+    \begin{tabular}{@{}ll@{}}
+      \toprule
+      Spock               & JUnit              \\ \midrule
+      Specification       & Test class         \\
+      setup()             & @Before            \\
+      cleanup()           & @After             \\
+      setupSpec()         & @BeforeClass       \\
+      cleanupSpec()       & @AfterClass        \\
+      Feature             & Test               \\
+      Feature method      & Test method        \\
+      Data-driven feature & Theory             \\
+      Condition           & Assertion          \\
+      Exception condition & @Test(expected=…​)  \\
+      Interaction         & Mock expectation   \\ \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Conclusões}
+ \begin{outline}
+   \1<1-> Código mais conciso
+   \1<2-> Funcionalidades do Groovy para os testes
+   \1<3-> Documentação através de especificações
+ \end{outline}
+\end{frame}
+
+
+\end{document}
