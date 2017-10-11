@@ -22,66 +22,33 @@ class Prontuario {
 	String imprimaConta() {
 		def formatter = NumberFormat.currencyInstance
 
+		float valorDiarias = internacao?.obtenhaValorDiarias() ?: 0
+		float valorTotalProcedimentos = obtenhaTotalProcedimentos()
+		int qtdeProcedimentosBasicos = obtenhaQtdeProcedimentosBasicos()
+		int qtdeProcedimentosComuns = obtenhaQtdeProcedimentosComuns()
+		int qtdeProcedimentosAvancados = obtenhaQtdeProcedimentosAvancados()
+
+		return montaStrRelatorio(formatter, valorDiarias, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
+	}
+
+	private String montaStrRelatorio(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
 		String conta = "----------------------------------------------------------------------------------------------"
+		conta += montaDadosCabecalho(formatter, valorDiarias, valorTotalProcedimentos)
+		conta += montaDadosInternacao(formatter, valorDiarias)
+		conta += montaDadosProcedimentos(formatter, valorTotalProcedimentos, qtdeProcedimentosBasicos, qtdeProcedimentosComuns, qtdeProcedimentosAvancados)
+		conta += montaDadosCabecalho()
 
-		float valorDiarias = 0.0
+		return conta
+	}
 
-		// Contabilizar as diárias
-		switch (internacao?.tipoLeito) {
-			case TipoLeito.ENFERMARIA:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 40.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 35.00 * internacao.qtdeDias // Internação Média
-				} else {
-					valorDiarias += 30.00 * internacao.qtdeDias // Internação Grave
-				}
-				break
+	private String montaDadosCabecalho() {
+		String conta = "\n\nVolte sempre, a casa é sua!"
+		conta += "\n----------------------------------------------------------------------------------------------"
+		conta
+	}
 
-			case TipoLeito.APARTAMENTO:
-				if (internacao.qtdeDias <= 3) {
-					valorDiarias += 100.00 * internacao.qtdeDias // Internação Básica
-				} else if (internacao.qtdeDias <= 8) {
-					valorDiarias += 90.00 * internacao.qtdeDias  // Internação Média
-				} else {
-					valorDiarias += 80.00 * internacao.qtdeDias  // Internação Grave
-				}
-				break
-		}
-
-		float valorTotalProcedimentos = 0.00
-		int qtdeProcedimentosBasicos = 0
-		int qtdeProcedimentosComuns = 0
-		int qtdeProcedimentosAvancados = 0
-
-		//Contabiliza os procedimentos
-		for (Procedimento procedimento in procedimentos) {
-			switch (procedimento.tipoProcedimento) {
-				case TipoProcedimento.BASICO:
-					qtdeProcedimentosBasicos++
-					valorTotalProcedimentos += 50.00
-					break
-
-				case TipoProcedimento.COMUM:
-					qtdeProcedimentosComuns++
-					valorTotalProcedimentos += 150.00
-					break
-
-				case TipoProcedimento.AVANCADO:
-					qtdeProcedimentosAvancados++
-					valorTotalProcedimentos += 500.00
-					break
-			}
-		}
-
-		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
-		conta += "\n\nConforme os detalhes abaixo:"
-
-		if (internacao) {
-			conta += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
-			conta += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
-		}
-
+	private String montaDadosProcedimentos(NumberFormat formatter, float valorTotalProcedimentos, int qtdeProcedimentosBasicos, int qtdeProcedimentosComuns, int qtdeProcedimentosAvancados) {
+		String conta = ""
 		if (procedimentos.size() > 0) {
 			conta += "\n\nValor Total Procedimentos:\t\t${formatter.format(valorTotalProcedimentos)}"
 
@@ -97,10 +64,71 @@ class Prontuario {
 				conta += "\n\t\t\t\t\t${qtdeProcedimentosAvancados} procedimento${qtdeProcedimentosBasicos > 1 ? 's' : ''} avançado${qtdeProcedimentosAvancados > 1 ? 's' : ''}"
 			}
 		}
+		conta
+	}
 
-		conta += "\n\nVolte sempre, a casa é sua!"
-		conta += "\n----------------------------------------------------------------------------------------------"
+	private String montaDadosInternacao(NumberFormat formatter, float valorDiarias) {
+		String conta = ""
+		if (internacao) {
+			conta += "\n\nValor Total Diárias:\t\t\t${formatter.format(valorDiarias)}"
+			conta += "\n\t\t\t\t\t${internacao.qtdeDias} diária${internacao.qtdeDias > 1 ? 's' : ''} em ${internacao.tipoLeito == TipoLeito.APARTAMENTO ? 'apartamento' : 'enfermaria'}"
+		}
+		conta
+	}
 
-		return conta
+	private String montaDadosCabecalho(NumberFormat formatter, float valorDiarias, float valorTotalProcedimentos) {
+		String conta = ""
+		conta += "\nA conta do(a) paciente $nomePaciente tem valor total de __ ${formatter.format(valorDiarias + valorTotalProcedimentos)} __"
+		conta += "\n\nConforme os detalhes abaixo:"
+		conta
+	}
+
+	float obtenhaTotalProcedimentos() {
+		float valorTotalProcedimentos = 0.00
+
+		//Contabiliza os procedimentos
+		for (Procedimento procedimento in procedimentos) {
+			switch (procedimento.tipoProcedimento) {
+				case TipoProcedimento.BASICO:
+					valorTotalProcedimentos += 50.00
+					break
+
+				case TipoProcedimento.COMUM:
+					valorTotalProcedimentos += 150.00
+					break
+
+				case TipoProcedimento.AVANCADO:
+					valorTotalProcedimentos += 500.00
+					break
+			}
+		}
+
+		return valorTotalProcedimentos
+	}
+
+	int obtenhaQtdeProcedimentosBasicos() {
+		return obtenhaQtdeProcedimentos(TipoProcedimento.BASICO)
+	}
+
+	int obtenhaQtdeProcedimentos(TipoProcedimento tipoProcedimento) {
+		int qtdeProcedimentos = 0
+
+		//Contabiliza os procedimentos
+		for (Procedimento procedimento in procedimentos) {
+			if (procedimento.tipoProcedimento == tipoProcedimento) {
+				qtdeProcedimentos++
+			}
+		}
+
+		return qtdeProcedimentos
+	}
+
+
+	int obtenhaQtdeProcedimentosComuns() {
+		return obtenhaQtdeProcedimentos(TipoProcedimento.COMUM)
+	}
+
+	int obtenhaQtdeProcedimentosAvancados() {
+		return obtenhaQtdeProcedimentos(TipoProcedimento.AVANCADO)
 	}
 }
