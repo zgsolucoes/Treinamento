@@ -246,7 +246,7 @@ dependencies {
 \begin{frame}[fragile]{Exemplo de Task e sua invocação}
  build.gradle:
  \begin{minted}[fontsize=\tiny]{groovy}
-task hello {
+task hello << {
   println "Hello world!"
 }
  \end{minted}
